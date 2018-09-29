@@ -1,41 +1,47 @@
 import React, { Component } from 'react'
 import ResultTable from '../../components/ResultTable'
 import axios from 'axios'
+import { Link, Route } from 'react-router-dom'
+import Saved from '../Saved/Saved'
 
 class Home extends Component {
     state = {
         topic: '',
         startYear: '',
         endYear: '',
-        searchResults: []
-      }
-    
-      handleInput = event => {
+        searchResults: [],
+        savedDisplayed: false,
+    }
+
+    handleInput = event => {
         this.setState({ [event.target.id]: event.target.value })
-      }
-    
-      handleSearchClick = event => {
+    }
+
+    handleSearchClick = event => {
         event.preventDefault()
-    
+
         let query = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
         console.log(`query: ${query}`)
         axios.get(query, {
-          params: {
-            'api-key': 'b9f91d369ff59547cd47b931d8cbc56b:0:74623931',
-            q: this.state.topic,
-            'begin_date': `${this.state.startYear}0101`,
-            'end_date': `${this.state.endYear}0101`,
-            fl: 'web_url,abstract,headline,pub_date'
-          }
-        }).then (result => {
-          console.log(`res: ${JSON.stringify(result)}`)
-          this.setState({ searchResults: result.data.response.docs.slice(0, 5) })
+            params: {
+                'api-key': 'b9f91d369ff59547cd47b931d8cbc56b:0:74623931',
+                q: this.state.topic,
+                'begin_date': `${this.state.startYear}0101`,
+                'end_date': `${this.state.endYear}0101`,
+                fl: 'web_url,abstract,headline,pub_date'
+            }
+        }).then(result => {
+            console.log(`res: ${JSON.stringify(result)}`)
+            this.setState({ searchResults: result.data.response.docs })
         })
-      }
-    
+    }
+
     render() {
         return (
             <div className="container my-2">
+                <Link to='/saved'>Show Saved Articles</Link>
+                <Route path='/saved' component={Saved} />
+
                 <div className="card my-4">
                     <div className="card-body">
                         <h5 className="card-title text-center">Search</h5>
@@ -62,12 +68,10 @@ class Home extends Component {
                 <div className="card my-4">
                     <div className="card-body">
                         <h5 className="card-title text-center">Results</h5>
-                        <hr></hr>
                         <ResultTable results={this.state.searchResults} />
                     </div>
                 </div>
             </div>
-
         )
     }
 }

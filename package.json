@@ -4,7 +4,14 @@
   "description": "U of M Bootcamp Assignment 16: MERN exercise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "seed": "node scripts/seedDB.js",
+    "install": "cd client && yarn install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -16,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/timsmith78/nytreact/issues"
   },
-  "homepage": "https://github.com/timsmith78/nytreact#readme"
+  "homepage": "https://github.com/timsmith78/nytreact#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.0",
+    "request": "^2.88.0"
+  }
 }

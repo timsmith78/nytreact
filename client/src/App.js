@@ -1,7 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css';
 import Home from './pages/Home/Home'
+import Saved from './pages/Saved/Saved'
 
 const App = () => (
   <div className="App">
@@ -10,9 +11,8 @@ const App = () => (
     </header>
     <Router>
       <div>
-      <Switch>
         <Route exact path='/' component={Home} />
-      </Switch>
+        <Route path='/saved' component={Saved} />
       </div>
     </Router>
   </div>
